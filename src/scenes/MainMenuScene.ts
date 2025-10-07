@@ -17,7 +17,7 @@ export class MainMenuScene extends Phaser.Scene {
 
     // Add Menu Buttons
     const menuOptions = [
-      { text: 'New Game', action: () => console.log('New Game clicked') },
+      { text: 'New Game', action: () => this.scene.start('NewGameScene') },
       { text: 'Load Game', action: () => console.log('Load Game clicked') },
       { text: 'Info', action: () => console.log('Info clicked') },
       { text: 'Quit', action: () => console.log('Quit clicked') }

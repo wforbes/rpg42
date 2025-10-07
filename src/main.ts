@@ -9,6 +9,10 @@ const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
   width: 800,
   height: 600,
+  parent: 'app',
+  dom: {
+    createContainer: true
+  },
   scene: [BootScene, MainMenuScene, NewGameScene, OverworldScene]
 };
 
