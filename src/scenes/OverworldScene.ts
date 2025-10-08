@@ -19,8 +19,8 @@ export class OverworldScene extends Phaser.Scene {
 	}
 
 	preload() {
-		this.load.image('tiles', 'res/overworld/tile/tiles2.gif');
-		this.load.image('mapLayout', 'res/overworld/tile/maps/areamap0.gif');
+		this.load.image('tiles', 'res/overworld/tile/tiles2_1.png');
+		this.load.image('mapLayout', 'res/overworld/tile/maps/test_level.gif');
 		this.load.spritesheet('player', 'res/overworld/sprites/player1_pokemon_v3.gif', {
 			frameWidth: this.playerSpriteFrameDims[0],
 			frameHeight: this.playerSpriteFrameDims[1]
@@ -37,10 +37,20 @@ export class OverworldScene extends Phaser.Scene {
 		this.physics.world.setBounds(0, 0, 800, 600); // Set bounds for the world
 
 		// This function creates a tilemap from the pixel data of the map layout image.
-		this.createTilemapFromLayoutImage();
+		const layer = this.createTilemapFromLayoutImage();
 
 		// Add player sprite with physics, start with standing South frame (frame 13)
 		this.player = this.physics.add.sprite(400, 300, 'player', 13);
+
+		// Add a collider between the player and the solid tiles
+		if (layer) {
+			this.physics.add.collider(this.player, layer);
+		}
+
+		// Set up camera
+		this.cameras.main.startFollow(this.player);
+		this.cameras.main.setZoom(4);
+		// Camera bounds will be set in createTilemapFromLayoutImage after the map is created
 
 		// Create all 8-directional animations
 		this.createPlayerAnimations();
@@ -147,11 +157,11 @@ export class OverworldScene extends Phaser.Scene {
 		}
 	}
 
-	createTilemapFromLayoutImage() {
+	createTilemapFromLayoutImage(): Phaser.Tilemaps.TilemapLayer | null {
 		const mapLayout = this.textures.get('mapLayout').getSourceImage();
 		if (!(mapLayout instanceof HTMLImageElement)) {
 			console.error('Map layout is not a valid image element.');
-			return;
+			return null;
 		}
 		const mapWidth = mapLayout.width;
 		const mapHeight = mapLayout.height;
@@ -161,16 +171,21 @@ export class OverworldScene extends Phaser.Scene {
 
 		// Create a temporary canvas to read pixel data
 		const canvas = this.textures.createCanvas('tempMap', mapWidth, mapHeight);
-		if (!canvas) return;
-		canvas.draw(0, 0, mapLayout);
-		const context = canvas.getContext();
+		if (!canvas) return null;
 
-		// Define the mapping from hex color to tile index.
-		// NOTE: This is a simplified mapping. More colors from areamap0.gif will need to be added.
-		const colorMap: { [key: string]: number } = {
-			'#ff00ff': 0, // Fuchsia -> Tile 0 (e.g., Grass)
-			'#00ffff': 1, // Aqua -> Tile 1 (e.g., Flowers)
-			'#ffff00': 2  // Yellow -> Tile 2 (e.g., Dirt Path)
+		// Get the context and disable image smoothing BEFORE drawing
+		const context = canvas.getContext();
+		if (!context) return null;
+		context.imageSmoothingEnabled = false;
+
+		// Now, draw the layout image onto the canvas
+		canvas.draw(0, 0, mapLayout);
+
+		// Define the mapping from hex color to tile index and collision.
+		const colorMap: { [key: string]: { index: number; collides: boolean } } = {
+			'#00ff00': { index: 0, collides: false },  // Green -> Grass
+			'#555555': { index: 1, collides: true },   // Gray -> Building (assuming tile index 3)
+			'#0000ff': { index: 0, collides: false }   // Blue -> Water (treated as Grass for now)
 		};
 
 		// Iterate over each pixel of the layout image
@@ -178,7 +193,8 @@ export class OverworldScene extends Phaser.Scene {
 			for (let x = 0; x < mapWidth; x++) {
 				const pixel = context.getImageData(x, y, 1, 1).data;
 				const hexColor = Phaser.Display.Color.RGBToString(pixel[0], pixel[1], pixel[2], 255, '#');
-				mapData[y][x] = colorMap[hexColor] || 0; // Default to tile 0 if color not found
+				const tileInfo = colorMap[hexColor] || { index: 0, collides: false };
+				mapData[y][x] = tileInfo.index;
 			}
 		}
 
@@ -186,10 +202,22 @@ export class OverworldScene extends Phaser.Scene {
 		const map = this.make.tilemap({ data: mapData, tileWidth: 32, tileHeight: 32 });
 		const tileset = map.addTilesetImage('tiles', 'tiles', 32, 32);
 		if (tileset) {
-			map.createLayer(0, tileset, 0, 0);
+			const layer = map.createLayer(0, tileset, 0, 0);
+			if (layer) {
+				// Define which tiles in the tileset are collidable.
+				// In our case, the rock tile is at index 1.
+				layer.setCollision([1]);
+
+				// Set camera bounds after layer is created
+				this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+				// Clean up the temporary canvas
+				this.textures.remove('tempMap');
+				return layer;
+			}
 		}
 
-		// Clean up the temporary canvas
+		// Clean up the temporary canvas in case of failure
 		this.textures.remove('tempMap');
+		return null;
 	}
 }

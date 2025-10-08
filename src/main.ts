@@ -10,6 +10,7 @@ const config: Phaser.Types.Core.GameConfig = {
   width: '100%',
   height: '100%',
   parent: 'app',
+  pixelArt: true,
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH
@@ -21,7 +22,7 @@ const config: Phaser.Types.Core.GameConfig = {
     default: 'arcade',
     arcade: {
       gravity: { x: 0, y: 0 },
-      debug: false
+      debug: true
     }
   },
   scene: [BootScene, MainMenuScene, NewGameScene, OverworldScene]
