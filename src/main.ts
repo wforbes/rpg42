@@ -7,11 +7,22 @@ import { OverworldScene } from './scenes/OverworldScene';
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
-  width: 800,
-  height: 600,
+  width: '100%',
+  height: '100%',
   parent: 'app',
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH
+  },
   dom: {
     createContainer: true
+  },
+  physics: {
+    default: 'arcade',
+    arcade: {
+      gravity: { x: 0, y: 0 },
+      debug: false
+    }
   },
   scene: [BootScene, MainMenuScene, NewGameScene, OverworldScene]
 };
