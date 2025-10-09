@@ -6,7 +6,7 @@ This document outlines the initial setup tasks required to prepare the SvelteKit
 
 The first step is to ensure the project's purpose and context are clear to any developer (including our future selves).
 
-*   `[ ]` **0a-1. Update README.md**: Clean up the default SvelteKit README in the `rpg42/` directory.
+*   `[x]` **0a-1. Update README.md**: Clean up the default SvelteKit README in the `rpg42/` directory.
     *   Add a clear and concise description of the project: "rpg42 is a 2D retro-style RPG where players build their coding skills through in-game quests and challenges."
     *   Include a "Project Status" section explaining that this is a full rewrite of an older JavaFX project called 'Omnia'.
     *   Link to the original Omnia repository: `https://github.com/wforbes/Omnia`.
@@ -15,7 +15,7 @@ The first step is to ensure the project's purpose and context are clear to any d
 
 Next, we will install and configure Skeleton, our chosen UI library, to establish a consistent look and feel for the application.
 
-*   `[ ]` **0b-1. Install Skeleton UI**: Follow the official SvelteKit installation guide to add Skeleton to the project. This will involve installing `@skeletonlabs/skeleton` and `@skeletonlabs/tw-plugin`.
+*   `[x]` **0b-1. Install Skeleton UI**: Follow the official SvelteKit installation guide to add Skeleton to the project. This will involve installing `@skeletonlabs/skeleton` and `@skeletonlabs/tw-plugin`.
 *   `[ ]` **0b-2. Configure Tailwind CSS**: Create and configure the `tailwind.config.js` and `postcss.config.js` files to integrate the Skeleton plugin and theme.
 *   `[ ]` **0b-3. Select a Theme**: Choose the 'cerberus' theme.
 *   `[ ]` **0b-4. Create App Layout**: Modify the root `+layout.svelte` to initialize the Skeleton `storePopup` and other global components, and set up the basic HTML document structure (`<head>`, `<body>`, etc.) as recommended by the Skeleton docs.
