@@ -20,7 +20,7 @@
 
 ## Web App Shell Todo
 
-- [ ] Clean up readme in rpg42 directory, include basic info about rpg42 new direction and that its based on original java game Omnia, include link https://github.com/wforbes/Omnia
+- [ ] Clean up readme in rpg42 directory, include basic info about rpg42 new direction, and explain that it's a rewrite of a java game "Omnia", https://github.com/wforbes/Omnia, into a web app game.
 - [ ] Install 'Skeleton' tailwindcss based component library (https://www.skeleton.dev/)
   - https://www.skeleton.dev/docs/get-started/installation/sveltekit
   - https://www.skeleton.dev/docs/get-started/fundamentals

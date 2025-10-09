@@ -16,11 +16,11 @@ This document outlines the rules and workflow for Large Language Model (LLM) ass
 
 This rule is in place to ensure the developer maintains full control over the codebase and that all changes are deliberate and well-considered.
 
-# LLM Assistant Workflow Guide
+## Rule 2: LLM Assistant Workflow Guide
 
 This document outlines the specific workflow to be followed by the LLM assistant when collaborating on this project. The goal is to ensure a sequential, incremental, and review-driven process.
 
-## Core Principles
+### Core Principles
 
 1.  **Sequential Execution:** The assistant must follow the steps outlined in a `plan` document in the exact order they are presented. Do not skip steps or work on multiple items simultaneously.
 2.  **Incremental Changes:** Each step (or sub-item) in the plan should be treated as a single, atomic unit of work. The assistant will make only the changes required to complete that specific item.
@@ -37,6 +37,47 @@ This document outlines the specific workflow to be followed by the LLM assistant
 5.  **User:** "Looks good. Please proceed with sub-item 1b."
 6.  **Assistant:** *...and so on.*
 
+# Planning & Task Sequencing Principles
+
+This section outlines the rules for how planning documents should be structured to ensure an efficient, testable, and incremental development workflow.
+
+## Rule 3: The Principle of Vertical Slicing & Immediate Testability
+
+> **IMPORTANT:** Plans MUST be structured as granular, end-to-end "vertical slices" of functionality. Each step must result in a small, immediately verifiable change. Avoid planning broad, horizontal layers of interdependent code that cannot be tested until all layers are complete.
+
+### Clarifications:
+
+*   **Build Just-In-Time:** Do not plan to build an entire abstract system (e.g., a complete data access layer, a full state management store, a comprehensive set of UI components) before it is needed. Instead, build only the specific methods, state variables, or components required for the immediate user-facing feature being implemented.
+*   **Ensure Immediate Feedback:** Each task, or a very small group of tasks, should result in a testable outcome. This creates a tight feedback loop to catch errors early. A testable outcome can be:
+    *   A visible UI change that renders correctly.
+    *   A verifiable `console.log` from a backend function.
+    *   A specific database record being created or updated.
+    *   A component that appears or disappears based on a state change.
+*   **Follow the Data Flow:** When planning features, the task sequence should follow the flow of data and user interaction. For a user-facing feature, this often means starting with the UI and progressively building out the backend logic that supports it. This aligns the automated development process with the natural, iterative way a human developer works.
+
+### Example: Planning a Sign-Up Form
+
+#### **INCORRECT (Horizontal Layers - AVOID THIS):**
+
+1.  **Plan A:** Build the entire data access layer for all user operations (create, read, update, delete).
+2.  **Plan B:** Build the entire validation layer with all Zod schemas for all user-related forms.
+3.  **Plan C:** Build the static UI for the sign-up form.
+4.  **Plan D:** Connect the UI to the validation and data layers.
+
+*   **Problem:** The work in Plan A and B is abstract and untestable until Plan D. Errors made in these foundational layers are only discovered late in the process, making them harder to fix and leading to wasted effort.
+
+#### **CORRECT (Vertical Slice - USE THIS):**
+
+1.  **Step 1: Build the UI.** Create the static HTML for the sign-up form.
+    *   *Testable Outcome:* The page renders correctly in the browser.
+2.  **Step 2: Create a Placeholder Action.** Make the form submit to a backend action that only `console.log`s the data.
+    *   *Testable Outcome:* Submitting the form logs the expected data to the server console.
+3.  **Step 3: Define and Wire Up Validation.** Add the necessary validation libraries and connect them to the form.
+    *   *Testable Outcome:* Typing invalid data in the form fields displays the correct error messages.
+4.  **Step 4: Build *only* the `createUser` method.** Implement the *single* repository method needed to save a new user.
+    *   *Testable Outcome:* This specific piece of the data layer can be unit-tested in isolation.
+5.  **Step 5: Connect the Action to the Database.** Update the form action to call the `createUser` method.
+    *   *Testable Outcome:* Successfully submitting the form creates a new user record in the database.
 
 # TypeScript Best Practices
 
