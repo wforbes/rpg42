@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import '@mantine/core/styles.css';
 import { ColorSchemeScript, MantineProvider, mantineHtmlProps } from '@mantine/core';
+import { ApplicationShell } from "./components/ApplicationShell";
 
 export const metadata: Metadata = {
 	title: "rpg42",
@@ -19,7 +20,9 @@ export default function RootLayout({
 				<ColorSchemeScript />
 			</head>
 			<body>
-				<MantineProvider>{children}</MantineProvider>
+				<MantineProvider>
+					<ApplicationShell>{children}</ApplicationShell>
+				</MantineProvider>
 			</body>
 		</html>
 	);

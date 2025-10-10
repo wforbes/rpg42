@@ -6,7 +6,7 @@ This document outlines the tasks required to build the basic user-facing shell o
 
 First, we will establish the consistent look and feel of the entire application using Mantine's `AppShell`.
 
-*   `[ ]` **1a-1. Implement AppShell Layout**: Modify the `app/layout.tsx` file to use Mantine's `<AppShell>` component as the root layout. This will provide a consistent structure with a header, main content area, etc.
+*   `[x]` **1a-1. Implement AppShell Layout**: Modify the `app/layout.tsx` file to use Mantine's `<AppShell>` component as the root layout. This will provide a consistent structure with a header, main content area, etc.
 *   `[ ]` **1a-2. Create Header Component**: Create a reusable component for the main application header (e.g., `app/components/Header.tsx`).
     *   It should display the site title, "rpg42", using a Mantine `<Title>` component.
     *   It should contain placeholder navigation links for "Home", "Login", and "Sign Up". These will be Mantine `<Button>` or `<Anchor>` components that will later use Next.js's `<Link>`.
