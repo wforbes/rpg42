@@ -16,9 +16,9 @@ First, we will establish the consistent look and feel of the entire application 
 
 Next, we will build the public-facing landing page for the application.
 
-*   `[ ]` **1b-1. Design Home Page**: Update the root `app/page.tsx` to serve as the marketing/landing page.
-*   `[ ]` **1b-2. Add Marketing Copy**: Inside a Mantine `<Container>` and `<Text>` component, include the placeholder marketing text: *"rpg42 is a mysterious game about a quest to learn the secrets of the universe through building your coding skills in an epic retro-style adventure."*
-*   `[ ]` **1b-3. Add Call to Action**: Add "Sign Up" and "Login" buttons (using Mantine `<Button>`) that will eventually link to the authentication pages.
+*   `[x]` **1b-1. Design Home Page**: Update the root `app/page.tsx` to serve as the marketing/landing page.
+*   `[x]` **1b-2. Add Marketing Copy**: Inside a Mantine `<Container>` and `<Text>` component, include the placeholder marketing text: *"rpg42 is a mysterious game about a quest to learn the secrets of the universe through building your coding skills in an epic retro-style adventure."*
+*   `[x]` **1b-3. Add Call to Action**: Add "Sign Up" and "Login" buttons (using Mantine `<Button>`) that will eventually link to the authentication pages.
 
 ## 1c. Routing & Page Setup
 
