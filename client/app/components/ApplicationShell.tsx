@@ -2,6 +2,7 @@
 
 import { AppShell } from '@mantine/core';
 import { ReactNode } from 'react';
+import { Header } from './Header';
 
 export function ApplicationShell({ children }: { children: ReactNode }) {
 	return (
@@ -10,7 +11,7 @@ export function ApplicationShell({ children }: { children: ReactNode }) {
 			padding="md"
 		>
 			<AppShell.Header>
-				<div>{/* Header content will go here in the next step */}</div>
+				<Header />
 			</AppShell.Header>
 			<AppShell.Main>
 				{children}
