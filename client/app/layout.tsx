@@ -18,7 +18,7 @@ export default function RootLayout({
 			<head>
 				<ColorSchemeScript />
 			</head>
-			<body className="w-full h-full">
+			<body>
 				<MantineProvider>{children}</MantineProvider>
 			</body>
 		</html>
