@@ -34,5 +34,5 @@ These are small, quality-of-life libraries that will make development cleaner an
 
 *   `[x]` **0d-1. Install Class Merging Utilities**: Install `clsx` and `tailwind-merge`.
     *   **Justification**: When building components, we often need to apply classes conditionally. These utilities provide a clean way to manage complex and conditional class strings and intelligently merge conflicting Tailwind CSS classes.
-*   `[ ]` **0d-2. Install Icon Library**: Install `@tabler/icons-react`.
+*   `[x]` **0d-2. Install Icon Library**: Install `@tabler/icons-react`.
     *   **Justification**: We will need icons for UI elements. `@tabler/icons-react` is the icon set recommended and maintained by the Mantine team. They are designed to work perfectly with Mantine components.
