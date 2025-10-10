@@ -24,8 +24,8 @@ Next, we will build the public-facing landing page for the application.
 
 Finally, we'll create the empty pages for the authentication flow and ensure navigation works correctly.
 
-*   `[ ]` **1c-1. Create Authentication Routes**: Create the directory structure and placeholder `page.tsx` files for the following routes:
+*   `[x]` **1c-1. Create Authentication Routes**: Create the directory structure and placeholder `page.tsx` files for the following routes:
     *   `app/login/page.tsx`
     *   `app/signup/page.tsx`
-*   `[ ]` **1c-2. Link Navigation**: Update the Header component to use Next.js's `<Link>` component within the Mantine buttons/anchors to correctly link to the new `/`, `/login`, and `/signup` pages.
+*   `[x]` **1c-2. Link Navigation**: Update the Header component to use Next.js's `<Link>` component within the Mantine buttons/anchors to correctly link to the new `/`, `/login`, and `/signup` pages.
 *   `[ ]` **1c-3. Confirm Game Route**: Ensure the existing `/game` route at `app/game/page.tsx` is still functional.

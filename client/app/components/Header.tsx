@@ -10,8 +10,8 @@ export function Header() {
 			<Link href="/"><Title order={3}>rpg42</Title></Link>
 			<Group>
 				<ColorSchemeToggle />
-				<Button variant="default">Login</Button>
-				<Button variant="default">Sign Up</Button>
+				<Button component={Link} href="/login" variant="default">Login</Button>
+				<Button component={Link} href="/signup" variant="default">Sign Up</Button>
 			</Group>
 		</Group>
 	);

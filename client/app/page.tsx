@@ -13,7 +13,7 @@ export default function Home() {
 			</Text>
 			<Group my="lg" justify="center">
 				<Button size="lg" variant="default" component={Link} href="/about">Learn more</Button>
-				<Button size="lg">Start Your Journey</Button>
+				<Button size="lg" component={Link} href="/signup">Start Your Journey</Button>
 			</Group>
 		</Container>
 	);

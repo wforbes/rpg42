@@ -1,6 +1,6 @@
 'use client';
 
-import { AppShell } from '@mantine/core';
+import { AppShell, rem } from '@mantine/core';
 import { ReactNode } from 'react';
 import { Header } from './Header';
 
@@ -8,12 +8,14 @@ export function ApplicationShell({ children }: { children: ReactNode }) {
 	return (
 		<AppShell
 			header={{ height: 60 }}
-			padding="md"
+			padding="none"
 		>
 			<AppShell.Header>
 				<Header />
 			</AppShell.Header>
-			<AppShell.Main>
+			<AppShell.Main
+				pt={`calc(${rem(60)}`}
+			>
 				{children}
 			</AppShell.Main>
 		</AppShell>
