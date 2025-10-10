@@ -23,7 +23,7 @@ Next, we will install and configure **Mantine**, our chosen UI library, to estab
 
 To build robust and secure authentication forms in Phase 2, we need powerful tools for data validation and form state management.
 
-*   `[ ]` **0c-1. Install Zod**: Install `zod`.
+*   `[x]` **0c-1. Install Zod**: Install `zod`.
     *   **Justification**: Zod is the industry standard for TypeScript-first schema declaration and validation. We will use it on the server-side within our Next.js Route Handlers (API routes) to validate all user input before it touches our database.
 *   `[x]` **0c-2. Install Mantine Form**: Use the `@mantine/form` package, which is already installed.
     *   **Justification**: This is the official form management library for Mantine. It integrates seamlessly with Mantine components and has a first-party adapter for using Zod for validation (`zodResolver`). This provides a robust, type-safe solution for handling complex forms like signup and login.
@@ -32,7 +32,7 @@ To build robust and secure authentication forms in Phase 2, we need powerful too
 
 These are small, quality-of-life libraries that will make development cleaner and more efficient.
 
-*   `[ ]` **0d-1. Install Class Merging Utilities**: Install `clsx` and `tailwind-merge`.
+*   `[x]` **0d-1. Install Class Merging Utilities**: Install `clsx` and `tailwind-merge`.
     *   **Justification**: When building components, we often need to apply classes conditionally. These utilities provide a clean way to manage complex and conditional class strings and intelligently merge conflicting Tailwind CSS classes.
 *   `[ ]` **0d-2. Install Icon Library**: Install `@tabler/icons-react`.
     *   **Justification**: We will need icons for UI elements. `@tabler/icons-react` is the icon set recommended and maintained by the Mantine team. They are designed to work perfectly with Mantine components.
