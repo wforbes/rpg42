@@ -16,9 +16,9 @@ The first step is to ensure the project's purpose and context are clear to any d
 Next, we will install and configure Skeleton, our chosen UI library, to establish a consistent look and feel for the application.
 
 *   `[x]` **0b-1. Install Skeleton UI**: Follow the official SvelteKit installation guide to add Skeleton to the project. This will involve installing `@skeletonlabs/skeleton` and `@skeletonlabs/tw-plugin`.
-*   `[ ]` **0b-2. Configure Tailwind CSS**: Create and configure the `tailwind.config.js` and `postcss.config.js` files to integrate the Skeleton plugin and theme.
-*   `[ ]` **0b-3. Select a Theme**: Choose the 'cerberus' theme.
-*   `[ ]` **0b-4. Create App Layout**: Modify the root `+layout.svelte` to initialize the Skeleton `storePopup` and other global components, and set up the basic HTML document structure (`<head>`, `<body>`, etc.) as recommended by the Skeleton docs.
+*   `[x]` **0b-2. Configure Tailwind CSS**: Create and configure the `tailwind.config.js` and `postcss.config.js` files to integrate the Skeleton plugin and theme.
+*   `[x]` **0b-3. Select a Theme**: Choose the 'cerberus' theme.
+*   `[x]` **0b-4. Create App Layout**: Modify the root `+layout.svelte` to initialize the Skeleton `storePopup` and other global components, and set up the basic HTML document structure (`<head>`, `<body>`, etc.) as recommended by the Skeleton docs.
 
 ## 0c. Recommended Dependencies: Forms & Validation
 

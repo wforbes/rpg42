@@ -97,4 +97,25 @@ At this point, signing up or logging into the website will take you to the pre-e
 - Having created their character, the user enters the game world
   - They start in a house (Indoor Area), which has one or more NPCs nearby. The NPCs have dialog to introduce the user to the game and begin the user's first goals.
   - They may exit the house, entering their home town (Outdoor Area)
-  
+
+## LLM Assistant Performance Log
+
+This section tracks instances where the LLM assistant's attempts to perform a task were unsuccessful, requiring manual intervention. The goal is to identify patterns and refine the collaboration process.
+
+-   **Issue:** Incorrectly moving a pnpm dependency.
+    -   **Goal:** Move `@skeletonlabs/skeleton` and `@skeletonlabs/tw-plugin` from `devDependencies` to `dependencies` in `package.json`.
+    -   **Attempted Command:** `pnpm install @skeletonlabs/skeleton @skeletonlabs/tw-plugin`.
+    -   **Problem:** This command did not change the location of the packages; it only updated their versions within `devDependencies`. It seems `pnpm` does not have a direct "move" command for dependencies.
+    -   **Resolution:** The user had to manually uninstall the packages (`pnpm uninstall ...`) and then reinstall them without the `-D` flag (`pnpm install ...`) to correctly place them in `dependencies`.
+
+-   **Issue:** Misdiagnosing a TypeScript module resolution error.
+    -   **Goal:** Fix a linter error on `+layout.svelte` where `@skeletonlabs/skeleton` could not be found.
+    -   **Mistake:** The assistant focused on the CSS imports in the file (`import '...@theme.css'`) instead of the actual line with the error (`import { AppShell } from '@skeletonlabs/skeleton'`). This led to several incorrect and irrelevant fixes (creating `jsconfig.json`, adding CSS module declarations to `app.d.ts`).
+    -   **Problem:** Failure to carefully read the user's specific feedback and correctly identify the source of the error, leading to wasted time and irrelevant changes.
+    -   **Resolution:** The user had to explicitly point out the correct line number, forcing a re-evaluation of the problem.
+
+-   **Issue:** Using outdated library (Skeleton UI) information.
+    -   **Goal:** Set up the root layout for the application.
+    -   **Mistake:** The assistant used knowledge from Skeleton v2, attempting to implement a deprecated `<AppShell>` component and `storePopup` utility. This was based on an outdated knowledge set and was the root cause of persistent linting errors.
+    -   **Problem:** This caused a significant amount of wasted time and tokens on multiple incorrect debugging attempts, failing to recognize that the core components being used no longer existed in the installed version of the library.
+    -   **Resolution:** The user intervened, identified that the components were deprecated, and provided a link to the v2 migration guide, which allowed the assistant to correct its understanding and proceed with a valid v3 implementation.  

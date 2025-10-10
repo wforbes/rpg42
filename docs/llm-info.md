@@ -131,3 +131,14 @@ This section outlines the rules for how planning documents should be structured 
 - Use the Factory pattern for object creation
 - Leverage dependency injection
 - Use the Module pattern for encapsulation 
+
+## Rule 4: Library and Dependency Protocol
+
+> **IMPORTANT:** When working with third-party libraries, especially those with rapid development cycles (e.g., UI frameworks, bundlers), you MUST NOT rely solely on your internal knowledge. Your primary source of truth is always the official documentation for the specific version listed in the project's `package.json`.
+
+**### Core Principles:**
+
+*   **Verify, Then Act:** Before implementing any feature using a library, first verify the correct implementation patterns and API usage in the official documentation. State the library and version you are referencing in your reasoning.
+*   **Trust the User's Context:** If the user provides a link to documentation, it immediately becomes the authoritative source. Discard any conflicting internal knowledge and align your approach with the provided document.
+*   **Debug by Questioning Assumptions:** If an implementation fails, your first debugging step is to question your own assumptions about the library's API. Re-consult the official documentation *before* assuming the issue is with the environment, cache, or configuration.
+*   **Explicitly State Dependencies:** When proposing a plan involving new libraries, explicitly state the library and version you intend to use (e.g., "For this task, I will use `library-name@v5.2.1`"). 
