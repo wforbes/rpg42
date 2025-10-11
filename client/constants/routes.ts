@@ -12,6 +12,7 @@ export const Routes = {
 	API: {
 		BASE: "/api",
 		AUTH: {
+			VERIFY_SESSION: "/auth/verify-session",
 			SIGN_UP: "/auth/sign-up",
 			LOGIN: "/auth/login",
 			LOGOUT: "/auth/logout",

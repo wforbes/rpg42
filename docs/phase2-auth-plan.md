@@ -63,8 +63,8 @@ Following the new guidance from Lucia's author, we will build our own secure, da
 
 With session management in place, we will connect it to the sign-up process.
 
-*   `[x]` **2f-1. Create Session in API Route**: Update the `sign-up` API route. After successfully creating the user, call our new `createSession` function to create a session and set the cookie.
-*   `[ ]` **2f-2. Implement Success UI & Redirect**: In the `signup/page.tsx` component, use the `isSuccess` status from the mutation to conditionally render a success message. In the `onSuccess` callback, redirect the user to `/game` after a short delay (e.g., using `setTimeout`).
+*   `[x]` **2f-1. Create Session in API Route**: Update the `sign-up` API route. After successfully creating the user, call our new `createSession` function and use the `set` cookie helper to attach the session ID to the response.
+*   `[x]` **2f-2. Redirect After Sign Up**: In the `signup/page.tsx` component, use the `onSuccess` callback of the `useSignUpMutation` hook to programmatically redirect the user to the `/game` page using Next.js's `useRouter`.
 
 ## 2g. Secure Routes & Implement Logout
 

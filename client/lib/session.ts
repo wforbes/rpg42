@@ -3,7 +3,6 @@ import 'server-only';
 import { DrizzleClientProvider } from '@/db/infra/providers/DrizzleClientProvider';
 import { sessionsTable, usersTable } from '@/db/drizzle/schema';
 import { eq } from 'drizzle-orm';
-import { randomUUID } from 'crypto';
 import { cookies } from 'next/headers';
 import { cache } from 'react';
 
@@ -15,16 +14,21 @@ const db = new DrizzleClientProvider().getClient();
 // --- Core Functions ---
 
 export const createSession = async (userId: string) => {
-  const sessionId = randomUUID();
   const expiresAt = new Date(Date.now() + SESSION_EXPIRES_IN);
 
-  await db.insert(sessionsTable).values({
-    id: sessionId,
-    user_id: userId,
-    expires_at: expiresAt,
-  });
+  const [newSession] = await db
+    .insert(sessionsTable)
+    .values({
+      user_id: userId,
+      expires_at: expiresAt,
+    })
+    .returning();
 
-  (await cookies()).set(SESSION_COOKIE_NAME, sessionId, {
+  if (!newSession) {
+    throw new Error('Failed to create session');
+  }
+
+  (await cookies()).set(SESSION_COOKIE_NAME, newSession.id, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     expires: expiresAt,

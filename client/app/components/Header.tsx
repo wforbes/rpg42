@@ -1,8 +1,9 @@
 'use client';
 import Link from 'next/link';
-import { Title, Group, Button } from '@mantine/core';
+import { Title, Group } from '@mantine/core';
 import { ColorSchemeToggle } from './ColorSchemeToggle';
-
+import { AuthButtons } from './AuthButtons';
+import { User } from '@/db/models/User';
 
 export function Header() {
 	return (
@@ -10,8 +11,7 @@ export function Header() {
 			<Link href="/"><Title order={3}>rpg42</Title></Link>
 			<Group>
 				<ColorSchemeToggle />
-				<Button component={Link} href="/login" variant="default">Login</Button>
-				<Button component={Link} href="/signup" variant="default">Sign Up</Button>
+                <AuthButtons />
 			</Group>
 		</Group>
 	);
