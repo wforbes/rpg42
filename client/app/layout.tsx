@@ -3,6 +3,7 @@ import "./globals.css";
 import '@mantine/core/styles.css';
 import { ColorSchemeScript, MantineProvider, mantineHtmlProps } from '@mantine/core';
 import { ApplicationShell } from "./components/ApplicationShell";
+import { QueryProvider } from "./providers";
 
 export const metadata: Metadata = {
 	title: "rpg42",
@@ -21,7 +22,9 @@ export default function RootLayout({
 			</head>
 			<body>
 				<MantineProvider>
-					<ApplicationShell>{children}</ApplicationShell>
+					<QueryProvider>
+						<ApplicationShell>{children}</ApplicationShell>
+					</QueryProvider>
 				</MantineProvider>
 			</body>
 		</html>

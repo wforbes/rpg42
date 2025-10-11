@@ -4,10 +4,10 @@ import { useEffect, useRef } from 'react';
 import Phaser from 'phaser';
 
 // Import scenes
-import { BootScene } from '../../public/game/scenes/BootScene';
-import { MainMenuScene } from '../../public/game/scenes/MainMenuScene';
-import { NewGameScene } from '../../public/game/scenes/NewGameScene';
-import { OverworldScene } from '../../public/game/scenes/OverworldScene';
+import { BootScene } from '../../../public/game/scenes/BootScene';
+import { MainMenuScene } from '../../../public/game/scenes/MainMenuScene';
+import { NewGameScene } from '../../../public/game/scenes/NewGameScene';
+import { OverworldScene } from '../../../public/game/scenes/OverworldScene';
 
 
 const PhaserGame = () => {

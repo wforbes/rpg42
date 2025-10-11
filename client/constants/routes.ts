@@ -10,10 +10,11 @@ export const Routes = {
 		GAME: "/game",
 	},
 	API: {
+		BASE: "/api",
 		AUTH: {
-			SIGN_UP: "/api/auth/sign-up",
-			LOGIN: "/api/auth/login",
-			LOGOUT: "/api/auth/logout",
+			SIGN_UP: "/auth/sign-up",
+			LOGIN: "/auth/login",
+			LOGOUT: "/auth/logout",
 		}
 	}
 };

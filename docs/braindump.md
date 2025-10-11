@@ -20,11 +20,12 @@
 
 ## Web App Shell Todo
 
-- [ ] Clean up readme in rpg42 directory, include basic info about rpg42 new direction, and explain that it's a rewrite of a java game "Omnia", https://github.com/wforbes/Omnia, into a web app game.
-- [ ] Install 'Skeleton' tailwindcss based component library (https://www.skeleton.dev/)
+- [x] Clean up readme in rpg42 directory, include basic info about rpg42 new direction, and explain that it's a rewrite of a java game "Omnia", https://github.com/wforbes/Omnia, into a web app game.
+- [x] Install 'Skeleton' tailwindcss based component library (https://www.skeleton.dev/)
   - https://www.skeleton.dev/docs/get-started/installation/sveltekit
   - https://www.skeleton.dev/docs/get-started/fundamentals
-- [ ] Update root page for basic layout: (https://play.tailwindcss.com/zP9RcoacIS)
+- Found that SvelteKit is not the best fit for an expedited setup. Pivoted to Next.js with Mantine for the UI library.
+- [ ] Update root page for basic layout
 - [ ] Include basic placeholder marketing info about rpg42
   - rpg42 is a mysterious game about a quest to learn the secrets of the universe through building your coding skills in an epic retro-style adventure
 - [ ] Add top app navbar as component that can be shared throughout app (https://www.skeleton.dev/docs/components/app-bar/svelte)

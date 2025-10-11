@@ -142,3 +142,15 @@ This section outlines the rules for how planning documents should be structured 
 *   **Trust the User's Context:** If the user provides a link to documentation, it immediately becomes the authoritative source. Discard any conflicting internal knowledge and align your approach with the provided document.
 *   **Debug by Questioning Assumptions:** If an implementation fails, your first debugging step is to question your own assumptions about the library's API. Re-consult the official documentation *before* assuming the issue is with the environment, cache, or configuration.
 *   **Explicitly State Dependencies:** When proposing a plan involving new libraries, explicitly state the library and version you intend to use (e.g., "For this task, I will use `library-name@v5.2.1`"). 
+
+## Rule 5: The Debugging Protocol
+
+When the user reports a bug or runtime error, the following sequential protocol is mandatory:
+
+1.  **Acknowledge & Hypothesize:** Acknowledge the error and form a hypothesis about the root cause.
+2.  **Verify & Defer:** Test the hypothesis. If the user has provided a link to documentation or a specific solution, defer to that as the source of truth. Otherwise, consult official documentation to verify the hypothesis.
+3.  **Report Findings:** Present a clear, concise report detailing the diagnosis. The report must include:
+    *   What the problem is.
+    *   Why it is happening.
+4.  **Propose Solutions (Do Not Implement):** List one or more potential solutions as concrete, actionable steps.
+5.  **Await Explicit Instruction:** Conclude by explicitly stating that you are awaiting instructions and will not implement any changes until directed to do so. 

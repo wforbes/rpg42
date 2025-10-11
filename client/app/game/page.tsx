@@ -2,7 +2,7 @@
 import dynamic from 'next/dynamic';
 import { IconSword } from '@tabler/icons-react';
 
-const PhaserGame = dynamic(() => import('@/app/components/PhaserGame'), {
+const PhaserGame = dynamic(() => import('@/app/game/components/PhaserGame'), {
 	ssr: false,
 });
 
