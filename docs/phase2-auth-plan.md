@@ -46,29 +46,32 @@ With the database ready, we will implement the full backend logic.
 *   `[x]` **2d-3. Update `UserRepository`**: In `db/infra/repos/UserRepository.ts`, update the `create` method to use the Drizzle client to perform a real database insertion.
 *   `[x]` **2d-4. Implement Full Sign Up API Logic**: Update the `sign-up` API route to validate the request, hash the password, and call the repository.
 
-## 2e. Session Management Setup (Lucia Auth)
+## 2e. Custom Session Management Setup
 
-Now we will add a robust session management library to handle user authentication.
+Following the new guidance from Lucia's author, we will build our own secure, database-backed session management logic.
 
-*   `[ ]` **2e-1. Install Dependencies**: Run `pnpm add lucia @lucia-auth/adapter-drizzle`.
-*   `[ ]` **2e-2. Update Drizzle Schema**: In `db/drizzle/schema.ts`, add the `sessionTable` and `keyTable` required by the Lucia Drizzle adapter.
-*   `[ ]` **2e-3. User Action: Generate & Migrate**: Instruct the user to run `pnpm db:generate` and `pnpm db:migrate` to add the new session tables to their database.
-*   `[ ]` **2e-4. Initialize Lucia**: Create a new file `lib/auth.ts` to configure and export the Lucia instance, including the Drizzle adapter.
-*   `[ ]` **2e-5. Add TypeScript Shim**: Create a `lucia.d.ts` file in the `lib` directory to provide TypeScript with definitions for the `Auth` and `User` objects.
+*   `[x]` **2e-1. Uninstall Deprecated Libraries**: Run `pnpm remove lucia @lucia-auth/adapter-drizzle`.
+*   `[x]` **2e-2. Update Drizzle Schema**: In `db/drizzle/schema.ts`, add a `sessionsTable` that links to the `usersTable`. It should contain columns for `id` (session ID), `user_id`, and `expires_at`.
+*   `[x]` **2e-3. User Action: Generate & Migrate**: Instruct the user to run `pnpm db:generate` and `pnpm db:migrate` to add the new `sessions` table to their database.
+*   `[x]` **2e-4. Create Session Logic**: Create a new file, `lib/session.ts`, to contain all session-related logic. This file will include functions for:
+    *   `createSession(userId)`: Generates a unique session ID, sets an expiration date, and inserts the session into the `sessionsTable`.
+    *   `validateSession(sessionId)`: Looks up a session by its ID, checks if it's expired, and returns the session data.
+    *   `invalidateSession(sessionId)`: Deletes a session from the database.
+*   `[x]` **2e-5. Create Cookie Helpers**: In `lib/session.ts` (or a new `lib/cookies.ts`), create helper functions to `set` and `delete` the session cookie, ensuring correct `HttpOnly`, `Secure`, `SameSite`, and `Path` attributes.
 
 ## 2f. Finalize Sign-Up Flow
 
 With session management in place, we will connect it to the sign-up process.
 
-*   `[ ]` **2f-1. Create Session in API Route**: Update the `sign-up` API route. After successfully creating the user, use the Lucia instance to create a session and set the session cookie on the response.
-*   `[ ]` **2f-2. Redirect After Sign Up**: In the `signup/page.tsx` component, use the `onSuccess` callback of the `useSignUpMutation` hook to programmatically redirect the user to the `/game` page using Next.js's `useRouter`.
+*   `[x]` **2f-1. Create Session in API Route**: Update the `sign-up` API route. After successfully creating the user, call our new `createSession` function to create a session and set the cookie.
+*   `[ ]` **2f-2. Implement Success UI & Redirect**: In the `signup/page.tsx` component, use the `isSuccess` status from the mutation to conditionally render a success message. In the `onSuccess` callback, redirect the user to `/game` after a short delay (e.g., using `setTimeout`).
 
 ## 2g. Secure Routes & Implement Logout
 
 Our goal is to protect pages and provide a way for users to log out.
 
 *   `[ ]` **2g-1. Secure the Game Page (Server-Side)**: Create `middleware.ts` to protect routes based on session validity.
-*   `[ ]` **2g-2. Conditional UI in Header**: Conditionally render UI in the header based on authentication status.
+*   `[ ]` **2g-2. Conditional UI in Header**: Update the `<Header>` component to use the `validateSession` function. If a user is logged in, hide the "Login" and "Sign Up" buttons and display a "Logout" button instead.
 *   `[ ]` **2g-3. Create Logout Functionality**: Implement the logout API route and connect it to the UI.
 
 ## 2h. User Login

@@ -8,6 +8,13 @@
       "when": 1760173406077,
       "tag": "0000_quick_sunspot",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1760175333846,
+      "tag": "0001_organic_energizer",
+      "breakpoints": true
     }
   ]
 }

@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { hash } from 'bcryptjs';
-import { InsertUserSchema, NewUserSchema } from '@/db/models/User';
+import { NewUserSchema } from '@/db/models/User';
 import { RepositoryFactory } from '@/db/infra/repos/RepositoryFactory';
+import { createSession } from '@/lib/session';
 
 export async function POST(request: NextRequest) {
   try {
@@ -32,7 +33,10 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ message: 'User creation failed' }, { status: 500 });
     }
 
-    // 4. Return the new user object (without password)
+    // 4. Create a session for the new user
+    await createSession(result.data.id);
+
+    // 5. Return the new user object (without password)
     const { passhash, ...userWithoutPassword } = result.data;
     return NextResponse.json(
       { message: 'Sign-up successful!', user: userWithoutPassword },

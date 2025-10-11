@@ -12,8 +12,10 @@ import { useForm } from '@mantine/form';
 import { zod4Resolver } from 'mantine-form-zod-resolver';
 import { InsertUserInput, insertUserSchema } from '@/db/validation';
 import { useSignUpMutation } from '@/lib/services/user/mutations';
+import { useRouter } from 'next/navigation';
 
 export default function SignupPage() {
+	const router = useRouter();
 	const signUpMutation = useSignUpMutation();
 
 	const form = useForm<InsertUserInput>({
@@ -26,8 +28,11 @@ export default function SignupPage() {
 	});
 
 	const handleSubmit = (values: InsertUserInput) => {
-		console.log('values', values);
-		signUpMutation.mutate(values);
+		signUpMutation.mutate(values, {
+			onSuccess: () => {
+				router.push('/game');
+			},
+		});
 	};
 
 	return (

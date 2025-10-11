@@ -12,3 +12,9 @@ export const usersTable = pgTable("users", {
 	unique("users_username_key").on(table.username),
 	unique("users_email_key").on(table.email),
 ]);
+
+export const sessionsTable = pgTable("sessions", {
+	id: uuid('id').defaultRandom().primaryKey().notNull(),
+	user_id: uuid('user_id').notNull().references(() => usersTable.id),
+	expires_at: timestamp('expires_at', { withTimezone: true, mode: 'date' }).notNull(),
+});
