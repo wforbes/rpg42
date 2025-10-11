@@ -15,7 +15,6 @@ export default function GamePage() {
 	const router = useRouter();
 	useEffect(() => { // can this be moved to useSessionQuery?
 		if (!user) {
-			console.log('No user, redirecting to login');
 			router.replace(Routes.AUTH.LOGIN);
 		}
 	}, [user, router]);

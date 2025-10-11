@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export function AuthButtons() {
 	const { data: { user } = {} } = useSessionQuery();
-	console.log("user", user);
+	
     return (
         <>
             {!user ? (

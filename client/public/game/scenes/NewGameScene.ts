@@ -35,9 +35,7 @@ export class NewGameScene extends Phaser.Scene {
 		startButton.on('pointerover', () => startButton.setStyle({ fill: '#ff0' }));
 		startButton.on('pointerout', () => startButton.setStyle({ fill: '#fff' }));
 		startButton.on('pointerdown', () => {
-			console.log(nameInput);
 			const name = (nameInput.getChildByName('name') as HTMLInputElement)?.value;
-			console.log(`Got name: ${name}`);
 			if (name) {
 				this.scene.start('OverworldScene', { playerName: name });
 			} else {

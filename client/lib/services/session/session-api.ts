@@ -8,7 +8,6 @@ export const sessionApi = {
 	verifySession: async (handleAuthLogout?: () => void) => {
 		try {
 			const res = await api.get(Routes.API.AUTH.VERIFY_SESSION);
-			console.log("res", res);
 			return res.data;
 		} catch (error: unknown) {
 			return handleApiError(

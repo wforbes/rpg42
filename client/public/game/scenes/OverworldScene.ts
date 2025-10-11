@@ -64,7 +64,7 @@ export class OverworldScene extends Phaser.Scene {
 			d: this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.D),
 		};
 
-		console.log(`Overworld loaded for player: ${this.playerName}`);
+		//console.log(`Overworld loaded for player: ${this.playerName}`);
 	}
 
 	update() {
