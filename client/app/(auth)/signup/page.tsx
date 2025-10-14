@@ -14,6 +14,10 @@ import { InsertUserInput, insertUserSchema } from '@/db/validation';
 import { useSignUpMutation } from '@/lib/services/user/mutations';
 import { useRouter } from 'next/navigation';
 
+/* TODO:
+- (server side) handle username already exists 
+- (server side) handle email already exists
+*/
 export default function SignupPage() {
 	const router = useRouter();
 	const signUpMutation = useSignUpMutation();

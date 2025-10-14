@@ -8,6 +8,8 @@ export const baseUserDrizzleSchema = createSelectSchema(usersTable);
 
 export const UserSchema = baseUserDrizzleSchema;
 export type User = z.infer<typeof UserSchema>;
+export const UserNoPasshash = UserSchema.omit({ passhash: true });
+export type UserNoPasshash = z.infer<typeof UserNoPasshash>;
 
 export const NewUserSchema = UserSchema.omit({
 	id: true,

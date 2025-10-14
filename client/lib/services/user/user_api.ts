@@ -6,3 +6,13 @@ export const signUp = async (userData: any) => {
   const { data } = await api.post(Routes.API.AUTH.SIGN_UP, userData);
   return data;
 };
+
+export const logout = async () => {
+  const { data } = await api.post(Routes.API.AUTH.LOGOUT);
+  return data;
+};
+
+export const login = async (userData: any) => {
+  const { data } = await api.post(Routes.API.AUTH.LOGIN, userData);
+  return data;
+};

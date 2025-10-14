@@ -7,3 +7,10 @@ export const insertUserSchema = z.object({
 });
 
 export type InsertUserInput = z.infer<typeof insertUserSchema>;
+
+export const loginUserSchema = z.object({
+  usernameEmail: z.string().min(3, 'Username/Email must be at least 3 characters long.'),
+  password: z.string().min(8, 'Password must be at least 8 characters long.'),
+});
+
+export type LoginUserInput = z.infer<typeof loginUserSchema>;
