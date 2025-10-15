@@ -1,14 +1,15 @@
 import Phaser from 'phaser';
+import { GameEventBridge, GameEvents } from '../../../lib/services/game/GameEventBridge';
 
 export class OverworldScene extends Phaser.Scene {
 	private playerName: string = '';
 	private player!: Phaser.Physics.Arcade.Sprite;
 	private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
 	private keys!: { [key: string]: Phaser.Input.Keyboard.Key };
+	private eventBridge!: GameEventBridge;
 	private lastDirection: string = 's'; // Default to South
 	private readonly playerSpriteFrameDims: number[] = [16, 16];
 	private spriteSheetWidth: number = 0;
-
 
 	constructor() {
 		super({ key: 'OverworldScene' });
@@ -33,6 +34,30 @@ export class OverworldScene extends Phaser.Scene {
 	}
 
 	create() {
+		// Get the event bridge instance
+		this.eventBridge = GameEventBridge.getInstance();
+
+		// Emit that the scene is ready
+		this.eventBridge.emit(GameEvents.GAME_READY, {});
+
+		// Example: Emit scene change
+		this.eventBridge.emit(GameEvents.SCENE_CHANGED, {
+			from: 'MainMenu',
+			to: 'OverworldScene'
+		});
+
+		// Listen for events from React
+		/*
+		this.eventBridge.on(GameEvents.PAUSE_GAME, () => {
+			console.log('Pause request from React');
+			this.scene.pause();
+		});
+
+		this.eventBridge.on(GameEvents.RESUME_GAME, () => {
+			console.log('Resume request from React');
+			this.scene.resume();
+		});*/
+
 		// Enable physics
 		this.physics.world.setBounds(0, 0, 800, 600); // Set bounds for the world
 
@@ -62,6 +87,7 @@ export class OverworldScene extends Phaser.Scene {
 			a: this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.A),
 			s: this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.S),
 			d: this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.D),
+			i: this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.I),
 		};
 
 		//console.log(`Overworld loaded for player: ${this.playerName}`);
@@ -75,6 +101,10 @@ export class OverworldScene extends Phaser.Scene {
 		const down = this.cursors.down.isDown || this.keys.s.isDown;
 		const left = this.cursors.left.isDown || this.keys.a.isDown;
 		const right = this.cursors.right.isDown || this.keys.d.isDown;
+		
+		if (Phaser.Input.Keyboard.JustDown(this.keys.i)) {
+			this.eventBridge.emit(GameEvents.TOGGLE_INVENTORY, {});
+		}
 
 		let velocityX = 0;
 		let velocityY = 0;
