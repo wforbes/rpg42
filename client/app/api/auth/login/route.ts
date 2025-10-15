@@ -1,6 +1,6 @@
 import { RepositoryFactory } from "@/db/infra/repos/RepositoryFactory";
 import { loginUserSchema } from "@/db/validation";
-import { User, UserNoPasshash } from "@/db/models/User";
+import { User } from "@/db/models/User";
 import { NextRequest, NextResponse } from "next/server";
 import { compare } from "bcryptjs";
 import { createSession } from "@/lib/session";
