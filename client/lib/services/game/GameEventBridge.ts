@@ -1,29 +1,27 @@
 import Phaser from 'phaser';
 
 export enum GameEvents {
+	// React → Phaser
+	TOGGLE_INVENTORY = 'ui:toggleInventory',
+	TOGGLE_PAUSE_MENU = 'ui:togglePauseMenu',
+	
 	// Phaser → React
 	PLAYER_DIED = 'player:died',
 	PLAYER_LEVEL_UP = 'player:levelUp',
 	INVENTORY_CHANGED = 'inventory:changed',
 	SCENE_CHANGED = 'scene:changed',
 	GAME_READY = 'game:ready',
-
-	// React → Phaser
-	//PAUSE_GAME = 'game:pause',
-	//RESUME_GAME = 'game:resume',
-	TOGGLE_INVENTORY = 'ui:toggleInventory',
 }
 
 // Event payload types
 export interface GameEventPayloads {
+	[GameEvents.TOGGLE_INVENTORY]: {};
+	[GameEvents.TOGGLE_PAUSE_MENU]: {};
 	[GameEvents.PLAYER_DIED]: { position: { x: number; y: number } };
 	[GameEvents.PLAYER_LEVEL_UP]: { level: number; stats: any };
 	[GameEvents.INVENTORY_CHANGED]: { items: any[] };
 	[GameEvents.SCENE_CHANGED]: { from: string; to: string };
 	[GameEvents.GAME_READY]: {};
-	//[GameEvents.PAUSE_GAME]: {};
-	//[GameEvents.RESUME_GAME]: {};
-	[GameEvents.TOGGLE_INVENTORY]: {};
 }
 
 export class GameEventBridge {

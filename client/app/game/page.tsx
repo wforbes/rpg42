@@ -20,6 +20,7 @@ export default function GamePage() {
 	const [gameReady, setGameReady] = useState(false);
 	const gameCommands = useGameCommands();
 	const [inventoryOpen, setInventoryOpen] = useState(false);
+	const [pauseMenuOpen, setPauseMenuOpen] = useState(false);
 	const [currentScene, setCurrentScene] = useState('');
 	//const socket = useSocket('http://localhost:3001'); // move to ENV
 
@@ -47,6 +48,11 @@ export default function GamePage() {
 		setInventoryOpen(!inventoryOpen);
 	});
 
+	useGameEvent(GameEvents.TOGGLE_PAUSE_MENU, () => {
+		console.log('Pause menu toggled');
+		setPauseMenuOpen(!pauseMenuOpen);
+	});
+
 	useEffect(() => { // can this be moved to useSessionQuery?
 		if (!user) {
 			router.replace(Routes.AUTH.LOGIN);
@@ -64,7 +70,7 @@ export default function GamePage() {
 			<div className="absolute top-0 left-0 w-full h-full z-10 pointer-events-none">
 				<div className="flex flex-row justify-center">
 					{currentScene === 'OverworldScene' && (
-						<OverworldUI inventoryOpen={inventoryOpen} />
+						<OverworldUI inventoryOpen={inventoryOpen} pauseMenuOpen={pauseMenuOpen} />
 					)}
 				</div>
 			</div>

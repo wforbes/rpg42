@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { OverworldScene } from './OverworldScene';
 
 export class NewGameScene extends Phaser.Scene {
 	constructor() {
@@ -37,6 +38,10 @@ export class NewGameScene extends Phaser.Scene {
 		startButton.on('pointerdown', () => {
 			const name = (nameInput.getChildByName('name') as HTMLInputElement)?.value;
 			if (name) {
+				// if overworld scene is not already loaded, load it
+				if (!this.scene.get('OverworldScene')) {
+					this.scene.add('OverworldScene', OverworldScene, false);
+				}
 				this.scene.start('OverworldScene', { playerName: name });
 			} else {
 				// Optional: Add some visual feedback for the user

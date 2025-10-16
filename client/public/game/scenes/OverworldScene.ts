@@ -10,6 +10,7 @@ export class OverworldScene extends Phaser.Scene {
 	private lastDirection: string = 's'; // Default to South
 	private readonly playerSpriteFrameDims: number[] = [16, 16];
 	private spriteSheetWidth: number = 0;
+	private escKeyHandler: (event: KeyboardEvent) => void = () => { };
 
 	constructor() {
 		super({ key: 'OverworldScene' });
@@ -36,6 +37,11 @@ export class OverworldScene extends Phaser.Scene {
 	create() {
 		// Get the event bridge instance
 		this.eventBridge = GameEventBridge.getInstance();
+
+		const playerTexture = this.textures.get('player');
+		if (playerTexture) {
+			this.spriteSheetWidth = playerTexture.getSourceImage()!.width;
+		}
 
 		// Emit that the scene is ready
 		this.eventBridge.emit(GameEvents.GAME_READY, {});
@@ -88,12 +94,102 @@ export class OverworldScene extends Phaser.Scene {
 			s: this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.S),
 			d: this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.D),
 			i: this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.I),
+			esc: this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
 		};
 
-		//console.log(`Overworld loaded for player: ${this.playerName}`);
+		// Create the ESC key handler as a bound function so we can remove it later
+		this.escKeyHandler = (event: KeyboardEvent) => {
+			if (event.code === 'Escape') {
+				const isPaused = this.scene.isPaused();
+
+				this.eventBridge.emit(GameEvents.TOGGLE_PAUSE_MENU, {});
+
+				if (isPaused) {
+					this.scene.resume();
+					console.log('Game resumed via ESC');
+				} else {
+					this.scene.pause();
+					console.log('Game paused via ESC');
+				}
+			}
+		};
+
+		// Add native browser event listener
+		window.addEventListener('keydown', this.escKeyHandler);
+
+		this.events.once('shutdown', () => {
+			console.log('OverworldScene shutdown event fired');
+
+			// Clean up event listener
+			if (this.escKeyHandler) {
+				window.removeEventListener('keydown', this.escKeyHandler);
+			}
+
+			// Clean up keyboard keys - THREE-PRONGED APPROACH
+			if (this.input && this.input.keyboard) {
+				// 1. Remove the Key objects from the scene's keyboard plugin
+				Object.values(this.keys).forEach(key => {
+					if (key) {
+						this.input.keyboard!.removeKey(key);
+					}
+				});
+		
+				// Remove cursor keys
+				if (this.cursors) {
+					this.input.keyboard!.removeKey(this.cursors.up);
+					this.input.keyboard!.removeKey(this.cursors.down);
+					this.input.keyboard!.removeKey(this.cursors.left);
+					this.input.keyboard!.removeKey(this.cursors.right);
+				}
+		
+				console.log('Removed Key objects from keyboard plugin');
+		
+				// 2. Remove key captures from the global KeyboardManager
+				// This is accessed through this.game.input.keyboard (not this.input.keyboard)
+				if (this.game.input.keyboard) {
+					const keyCodesToUncapture = [
+						Phaser.Input.Keyboard.KeyCodes.W,
+						Phaser.Input.Keyboard.KeyCodes.A,
+						Phaser.Input.Keyboard.KeyCodes.S,
+						Phaser.Input.Keyboard.KeyCodes.D,
+						Phaser.Input.Keyboard.KeyCodes.I,
+						Phaser.Input.Keyboard.KeyCodes.ESC,
+						Phaser.Input.Keyboard.KeyCodes.UP,
+						Phaser.Input.Keyboard.KeyCodes.DOWN,
+						Phaser.Input.Keyboard.KeyCodes.LEFT,
+						Phaser.Input.Keyboard.KeyCodes.RIGHT
+					];
+		
+					this.game.input.keyboard.removeCapture(keyCodesToUncapture);
+					console.log('Removed key captures from global KeyboardManager');
+				}
+		
+				// 3. Remove all event listeners from the keyboard plugin
+				this.input.keyboard.removeAllListeners();
+				console.log('Removed all keyboard event listeners');
+			}
+
+			// Clean up animations
+			const directions = ['n', 's', 'w', 'e', 'nw', 'ne', 'sw', 'se'];
+			directions.forEach(dir => {
+				const animKey = `walk-${dir}`;
+				if (this.anims.exists(animKey)) {
+					this.anims.remove(animKey);
+				}
+			});
+		});
+
+		this.events.once('destroy', () => {
+			console.log('OverworldScene destroy event fired');
+			// Additional cleanup if needed when scene is permanently removed
+		});
 	}
 
 	update() {
+		if (Phaser.Input.Keyboard.JustDown(this.keys.i)) {
+			this.eventBridge.emit(GameEvents.TOGGLE_INVENTORY, {});
+		}
+
 		const speed = 100;
 		this.player.setVelocity(0);
 
@@ -101,10 +197,6 @@ export class OverworldScene extends Phaser.Scene {
 		const down = this.cursors.down.isDown || this.keys.s.isDown;
 		const left = this.cursors.left.isDown || this.keys.a.isDown;
 		const right = this.cursors.right.isDown || this.keys.d.isDown;
-		
-		if (Phaser.Input.Keyboard.JustDown(this.keys.i)) {
-			this.eventBridge.emit(GameEvents.TOGGLE_INVENTORY, {});
-		}
 
 		let velocityX = 0;
 		let velocityY = 0;
@@ -250,4 +342,45 @@ export class OverworldScene extends Phaser.Scene {
 		this.textures.remove('tempMap');
 		return null;
 	}
+
+	/* Hallunciated as a method to shutdown the scene, but not actually called.
+	shutdown() {
+		console.log('Shutting down OverworldScene');
+		// clean up event listener(s)
+		if (this.escKeyHandler) {
+			window.removeEventListener('keydown', this.escKeyHandler);
+		}
+
+		// Clean up keyboard key captures
+		// This allows these keys to work in text inputs again
+		if (this.input && this.input.keyboard) {
+			// Remove key captures so they don't interfere with text inputs in other scenes
+			const keyCodes = [
+				Phaser.Input.Keyboard.KeyCodes.W,
+				Phaser.Input.Keyboard.KeyCodes.A,
+				Phaser.Input.Keyboard.KeyCodes.S,
+				Phaser.Input.Keyboard.KeyCodes.D,
+				Phaser.Input.Keyboard.KeyCodes.I,
+				Phaser.Input.Keyboard.KeyCodes.ESC
+			];
+
+			keyCodes.forEach(keyCode => {
+				// Remove the key from the keyboard plugin
+				if (this.input.keyboard) {
+					this.input.keyboard.removeKey(keyCode);
+				}
+			});
+
+			console.log('Removed keyboard key captures');
+		}
+
+		// clean up animations
+		const directions = ['n', 's', 'w', 'e', 'nw', 'ne', 'sw', 'se'];
+		directions.forEach(dir => {
+			const animKey = `walk-${dir}`;
+			if (this.anims.exists(animKey)) {
+				this.anims.remove(animKey);
+			}
+		});
+	}*/
 }
