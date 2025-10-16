@@ -27,11 +27,6 @@ export class OverworldScene extends Phaser.Scene {
 			frameWidth: this.playerSpriteFrameDims[0],
 			frameHeight: this.playerSpriteFrameDims[1]
 		});
-
-		// Listen for the file load completion to get the spritesheet width
-		this.load.on('filecomplete-spritesheet-player', (key: string, type: string, data: any) => {
-			this.spriteSheetWidth = data.width;
-		});
 	}
 
 	create() {
@@ -94,7 +89,6 @@ export class OverworldScene extends Phaser.Scene {
 			s: this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.S),
 			d: this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.D),
 			i: this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.I),
-			esc: this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
 		};
 
 		// Create the ESC key handler as a bound function so we can remove it later
@@ -117,6 +111,10 @@ export class OverworldScene extends Phaser.Scene {
 		// Add native browser event listener
 		window.addEventListener('keydown', this.escKeyHandler);
 
+		this.keys.i.on('down', () => {
+			this.eventBridge.emit(GameEvents.TOGGLE_INVENTORY, {});
+		});
+
 		this.events.once('shutdown', () => {
 			console.log('OverworldScene shutdown event fired');
 
@@ -125,24 +123,26 @@ export class OverworldScene extends Phaser.Scene {
 				window.removeEventListener('keydown', this.escKeyHandler);
 			}
 
+			this.keys.i.off('down');
+
 			// Clean up keyboard keys - THREE-PRONGED APPROACH
 			if (this.input && this.input.keyboard) {
 				// 1. Remove the Key objects from the scene's keyboard plugin
 				Object.values(this.keys).forEach(key => {
 					if (key) {
-						this.input.keyboard!.removeKey(key);
+						key.destroy();
 					}
 				});
 		
 				// Remove cursor keys
 				if (this.cursors) {
-					this.input.keyboard!.removeKey(this.cursors.up);
-					this.input.keyboard!.removeKey(this.cursors.down);
-					this.input.keyboard!.removeKey(this.cursors.left);
-					this.input.keyboard!.removeKey(this.cursors.right);
+					this.cursors.up.destroy();
+					this.cursors.down.destroy();
+					this.cursors.left.destroy();
+					this.cursors.right.destroy();
 				}
 		
-				console.log('Removed Key objects from keyboard plugin');
+				console.log('Destroyed Key objects');
 		
 				// 2. Remove key captures from the global KeyboardManager
 				// This is accessed through this.game.input.keyboard (not this.input.keyboard)
@@ -153,7 +153,6 @@ export class OverworldScene extends Phaser.Scene {
 						Phaser.Input.Keyboard.KeyCodes.S,
 						Phaser.Input.Keyboard.KeyCodes.D,
 						Phaser.Input.Keyboard.KeyCodes.I,
-						Phaser.Input.Keyboard.KeyCodes.ESC,
 						Phaser.Input.Keyboard.KeyCodes.UP,
 						Phaser.Input.Keyboard.KeyCodes.DOWN,
 						Phaser.Input.Keyboard.KeyCodes.LEFT,
@@ -186,9 +185,10 @@ export class OverworldScene extends Phaser.Scene {
 	}
 
 	update() {
+		/* // replaced for event-based approach
 		if (Phaser.Input.Keyboard.JustDown(this.keys.i)) {
 			this.eventBridge.emit(GameEvents.TOGGLE_INVENTORY, {});
-		}
+		}*/
 
 		const speed = 100;
 		this.player.setVelocity(0);
